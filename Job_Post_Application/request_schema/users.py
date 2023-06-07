@@ -2,7 +2,15 @@ from pydantic import BaseModel, EmailStr
 
 # fields required during user creation
 class CreateUser(BaseModel):
-    name: str 
+    username: str 
     passwd: str
     email: EmailStr
     
+class ShowUser(BaseModel):
+    username: str
+    email: EmailStr
+    is_active: bool
+    
+    class Config():
+        orm_mode = True
+        

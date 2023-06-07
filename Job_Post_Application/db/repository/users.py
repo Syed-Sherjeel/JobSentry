@@ -6,7 +6,7 @@ from core import Hasher
 
 
 def create_new_user(user: CreateUser, db:Session):
-    user = User(username=user.name,
+    user = User(username=user.username,
                 email=user.email,
                 hashed_password=Hasher.get_password_hash(user.passwd),
                 is_active=True,
