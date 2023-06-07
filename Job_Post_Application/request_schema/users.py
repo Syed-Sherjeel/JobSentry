@@ -3,7 +3,7 @@ from pydantic import BaseModel, EmailStr
 # fields required during user creation
 class CreateUser(BaseModel):
     username: str 
-    passwd: str
+    password: str
     email: EmailStr
     
 class ShowUser(BaseModel):
