@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+
+from db import Base
 from core import settings
 from apis import api_router
-from db import Base
 from db.session import engine
 
 
@@ -27,4 +28,3 @@ def create_tables():
 
 
 app = start_application()
-

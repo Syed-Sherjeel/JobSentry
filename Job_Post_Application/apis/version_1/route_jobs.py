@@ -1,4 +1,3 @@
-
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, HTTPException
 
@@ -21,5 +20,8 @@ def create_jobs(job: JobCreate, db: Session = Depends(get_db)):
 def retrieve_record(record_id: int, db: Session = Depends(get_db)):
     record = retrieve_job(record_id, db)
     if not record:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Job with id: {record_id} does not exist")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Job with id: {record_id} does not exist",
+        )
     return record

@@ -16,4 +16,8 @@ class Hasher:
 if __name__ == "__main__":
     hasher = Hasher()
     print(hasher.get_password_hash("123456"))
-    print(hasher.verify_password("HelloWorld", "$2y$12$kbQm9Vb96023efZFhSkZf.a4bAGyzDW6zKC/K1JDtKY0f.gKZxAHO"))
+    print(
+        hasher.verify_password(
+            "HelloWorld", "$2y$12$kbQm9Vb96023efZFhSkZf.a4bAGyzDW6zKC/K1JDtKY0f.gKZxAHO"
+        )
+    )
