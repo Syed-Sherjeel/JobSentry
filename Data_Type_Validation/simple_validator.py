@@ -13,8 +13,8 @@ class Blog_with_comment(Simple_Blog):
 
 
 if __name__ == "__main__":
-    print(Simple_Blog(title='Right_test_case', is_active=False))
-    print(Blog_with_comment(title='Right_test_case', is_active=False))
+    print(Simple_Blog(title="Right_test_case", is_active=False))
+    print(Blog_with_comment(title="Right_test_case", is_active=False))
 
-    print(Simple_Blog(title='Faulty_test_case', is_active=132))
-    print(Blog_with_comment(title='Faulty_test_case', is_active=132))
+    print(Simple_Blog(title="Faulty_test_case", is_active=132))
+    print(Blog_with_comment(title="Faulty_test_case", is_active=132))

@@ -3,11 +3,12 @@ from datetime import datetime
 from pydantic import BaseModel, Field, validator, root_validator
 from enum import Enum
 
+
 # This will limit the input to following parameters only
 class Languages(str, Enum):
-    PY = 'Python'
-    JAVA = 'Java'
-    GO = 'Go'
+    PY = "Python"
+    JAVA = "Java"
+    GO = "Go"
 
 
 class CodeFile(BaseModel):
@@ -35,18 +36,30 @@ class RegisterUser(BaseModel):
     def validate_password(cls, values):
         original_password = values.get("password")
         retyped_password = values.get("retyped_password")
-        if original_password!=retyped_password:
+        if original_password != retyped_password:
             raise ValueError("Passwords don't match")
         return values
 
 
 if __name__ == "__main__":
     # Pass Case
-    print(CodeFile(title='Pydantic', language="Python", is_active=True))
-    print(RegisterUser(name='SyedSherjeel', email='sherjeelhashmi@gmail.com',
-                       password='123@982#', retyped_password='123@982#'))
+    print(CodeFile(title="Pydantic", language="Python", is_active=True))
+    print(
+        RegisterUser(
+            name="SyedSherjeel",
+            email="sherjeelhashmi@gmail.com",
+            password="123@982#",
+            retyped_password="123@982#",
+        )
+    )
 
     # Fail Case
-    print(CodeFile(title='Pydantic', language="JavaScript", is_active=True))
-    print(RegisterUser(name='SyedSherjeel', email='sherjeelhashmi@gmail.com',
-                       password='123@982#', retyped_password='123@982'))
+    print(CodeFile(title="Pydantic", language="JavaScript", is_active=True))
+    print(
+        RegisterUser(
+            name="SyedSherjeel",
+            email="sherjeelhashmi@gmail.com",
+            password="123@982#",
+            retyped_password="123@982",
+        )
+    )
