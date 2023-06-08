@@ -4,7 +4,7 @@ import json
 def test_create_job_1(client):
     data = {'title': 'Sr. SWE',
             'company': 'AWS',
-            'company_url': 'aws.zome.com/doan',
+            'company_url': 'aws.zone.com/doan',
             'description': 'Lead team',
             'location': 'NY,BK'}
     response = client.post('/jobs/create-job/', content=json.dumps(data))

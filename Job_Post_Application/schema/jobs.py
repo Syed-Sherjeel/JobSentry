@@ -20,5 +20,5 @@ class ShowJob(BaseModel):
     description: Optional[str]
     company_url: Optional[str]
 
-    class Config():
+    class Config:
         orm_mode = True

@@ -5,7 +5,7 @@ from db.model.users import User
 from core import Hasher
 
 
-def create_new_user(user: CreateUser, db:Session):
+def create_new_user(user: CreateUser, db: Session):
     user = User(username=user.username,
                 email=user.email,
                 hashed_password=Hasher.get_password_hash(user.password),
