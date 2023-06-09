@@ -13,7 +13,7 @@ def test_create_job_1(client):
     assert response.status_code == 200
     assert response.json()["title"] == "Sr. SWE"
     assert response.json()["company"] == "AWS"
-    assert response.json()["company_url"] == "aws.zome.com/doan"
+    assert response.json()["company_url"] == "aws.zone.com/doan"
     assert response.json()["description"] == "Lead team"
     assert response.json()["location"] == "NY,BK"
 
@@ -35,3 +35,16 @@ def test_read_job(client):
     response = client.get("/jobs/get/1/")
     assert response.status_code == 200
     assert response.json()["title"] == "Jr. SRE"
+
+
+def test_read_all_jobs(client):
+    data = {"title": "PSE AI", "company": "DOT", "location": "Islamabad"}
+
+    client.post("/jobs/create-job/", content=json.dumps(data))
+    client.post("/jobs/create-job/", content=json.dumps(data))
+
+    response = client.get("/jobs/all/")
+    print(response.json())
+    assert response.status_code == 200
+    assert response.json()[0]
+    assert response.json()[1]

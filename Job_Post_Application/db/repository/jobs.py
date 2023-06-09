@@ -18,5 +18,5 @@ def retrieve_job(record_id: int, db: Session):
 
 
 def list_jobs(db: Session):
-    item = db.query(Job).filter(Job.is_active is True).all()
+    item = db.query(Job).filter(Job.is_active == True).all()
     return item
