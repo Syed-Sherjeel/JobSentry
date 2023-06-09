@@ -20,3 +20,13 @@ def retrieve_job(record_id: int, db: Session):
 def list_jobs(db: Session):
     item = db.query(Job).filter(Job.is_active == True).all()
     return item
+
+
+def update_job_by_id(record_id: int, job: JobCreate, db: Session, owner_id: int):
+    existing_record = db.query(Job).filter(Job.id == record_id)
+    if not existing_record.first():
+        return 0
+    job.dict().update(owner_id=owner_id)
+    existing_record.update(job.dict())
+    db.commit()
+    return 1
