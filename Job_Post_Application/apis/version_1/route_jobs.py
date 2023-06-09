@@ -1,9 +1,11 @@
+from typing import List
+
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, HTTPException
 
 from db.session import get_db
 from schema.jobs import JobCreate, ShowJob
-from db.repository.jobs import create_new_job, retrieve_job
+from db.repository.jobs import create_new_job, retrieve_job, list_jobs
 
 
 router = APIRouter()
@@ -25,3 +27,9 @@ def retrieve_record(record_id: int, db: Session = Depends(get_db)):
             detail=f"Job with id: {record_id} does not exist",
         )
     return record
+
+
+@router.get("/all", response_model=List[ShowJob])
+def get_all_jobs(db: Session = Depends(get_db)):
+    records = list_jobs(db)
+    return records
