@@ -5,7 +5,13 @@ from fastapi import APIRouter, Depends, status, HTTPException
 
 from db.session import get_db
 from schema.jobs import JobCreate, ShowJob
-from db.repository.jobs import create_new_job, retrieve_job, list_jobs, update_job_by_id
+from db.repository.jobs import (
+    create_new_job,
+    retrieve_job,
+    list_jobs,
+    update_job_by_id,
+    delete_job_by_id,
+)
 
 
 router = APIRouter()
@@ -43,6 +49,19 @@ def update_job(record_id: int, job: JobCreate, db: Session = Depends(get_db)):
     )
     if not message:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Job with id: {id} not found"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Job with id: {record_id} not found",
         )
     return {"msg": "Successfully updated data"}
+
+
+@router.delete("/delete/{record_id}")
+def delete_job(record_id: int, db: Session = Depends(get_db)):
+    current_user = 1
+    repsonse = delete_job_by_id(record_id, db, owner_id=current_user)
+    if not repsonse:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Job with id: {record_id} not found",
+        )
+    return {"msg": "Successfully deleted data"}
