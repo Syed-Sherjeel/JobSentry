@@ -4,3 +4,4 @@ venv
 *.db
 .idea
 .pytest_cache
+.env
