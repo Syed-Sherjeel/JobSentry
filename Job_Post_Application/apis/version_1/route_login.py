@@ -4,7 +4,8 @@ from datetime import timedelta
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends
 from fastapi import status, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm
+from jose import JWTError, jwt
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 
 from db.session import get_db
 from schema.token import Token
@@ -41,3 +42,28 @@ def login_for_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/token")
+
+
+def get_current_user_from_token(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+):
+    credential_exception = HTTPException(
+        detail="Could not validate credentials",
+        status_code=status.HTTP_401_UNAUTHORIZED,
+    )
+    try:
+        decoded = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
+        username: str = decoded.get("sub")
+        if not username:
+            raise credential_exception
+    except JWTError:
+        raise credential_exception
+    user = get_user(username, db)
+    if user is None:
+        raise credential_exception
+    return user
