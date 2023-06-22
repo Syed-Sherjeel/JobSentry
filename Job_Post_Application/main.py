@@ -4,11 +4,13 @@ from fastapi.staticfiles import StaticFiles
 from db import Base
 from core import settings
 from apis import api_router
+from webapp import web_page_router
 from db.session import engine
 
 
 def include_router(application: FastAPI):
     application.include_router(api_router)
+    application.include_router(web_page_router)
 
 
 def configure_static(application: FastAPI):
