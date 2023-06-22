@@ -7,13 +7,14 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from db import Base
 from db.session import get_db
 from apis import api_router
+from utils.users import authenticate_token_from_email
 
 
 def start_application():
@@ -70,3 +71,8 @@ def client(
     app.dependency_overrides[get_db] = _get_test_db
     with TestClient(app) as client:
         yield client
+
+
+@pytest.fixture(scope="function")
+def registered_user_token_header(client: TestClient, db_session: Session):
+    return authenticate_token_from_email(client, db_session)

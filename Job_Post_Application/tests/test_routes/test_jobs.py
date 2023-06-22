@@ -2,7 +2,7 @@ import json
 from fastapi import status
 
 
-def test_create_job_1(client):
+def test_create_job_1(client, registered_user_token_header):
     data = {
         "title": "Sr. SWE",
         "company": "AWS",
@@ -10,7 +10,11 @@ def test_create_job_1(client):
         "description": "Lead team",
         "location": "NY,BK",
     }
-    response = client.post("/jobs/create-job/", content=json.dumps(data))
+    response = client.post(
+        "/jobs/create-job/",
+        content=json.dumps(data),
+        headers=registered_user_token_header,
+    )
     assert response.status_code == 200
     assert response.json()["title"] == "Sr. SWE"
     assert response.json()["company"] == "AWS"
@@ -19,9 +23,13 @@ def test_create_job_1(client):
     assert response.json()["location"] == "NY,BK"
 
 
-def test_create_job_2(client):
+def test_create_job_2(client, registered_user_token_header):
     data = {"title": "Jr. MLE", "company": "Azure"}
-    response = client.post("/jobs/create-job/", content=json.dumps(data))
+    response = client.post(
+        "/jobs/create-job/",
+        content=json.dumps(data),
+        headers=registered_user_token_header,
+    )
     assert response.status_code == 200
     assert response.json()["title"] == "Jr. MLE"
     assert response.json()["company"] == "Azure"
@@ -30,19 +38,31 @@ def test_create_job_2(client):
     assert response.json()["location"] == "Remote"
 
 
-def test_read_job(client):
+def test_read_job(client, registered_user_token_header):
     data = {"title": "Jr. SRE", "company": "zone"}
-    _ = client.post("/jobs/create-job/", content=json.dumps(data))
+    _ = client.post(
+        "/jobs/create-job/",
+        content=json.dumps(data),
+        headers=registered_user_token_header,
+    )
     response = client.get("/jobs/get/1/")
     assert response.status_code == 200
     assert response.json()["title"] == "Jr. SRE"
 
 
-def test_read_all_jobs(client):
+def test_read_all_jobs(client, registered_user_token_header):
     data = {"title": "PSE AI", "company": "DOT", "location": "Islamabad"}
 
-    client.post("/jobs/create-job/", content=json.dumps(data))
-    client.post("/jobs/create-job/", content=json.dumps(data))
+    client.post(
+        "/jobs/create-job/",
+        content=json.dumps(data),
+        headers=registered_user_token_header,
+    )
+    client.post(
+        "/jobs/create-job/",
+        content=json.dumps(data),
+        headers=registered_user_token_header,
+    )
 
     response = client.get("/jobs/all/")
     print(response.json())
@@ -51,29 +71,39 @@ def test_read_all_jobs(client):
     assert response.json()[1]
 
 
-def test_update_one_job(client):
+def test_update_one_job(client, registered_user_token_header):
     data = {
         "title": "Jr. MLE",
         "company": "NoobSlayer",
         "description": "fastapi",
     }
-    client.post("/jobs/create-job/", content=json.dumps(data))
+    client.post(
+        "/jobs/create-job/",
+        content=json.dumps(data),
+        headers=registered_user_token_header,
+    )
     data["title"] = "Sr. MLE"
     data["location"] = "NY,BK"
-    _ = client.put("/jobs/update/1", content=json.dumps(data))
+    _ = client.put(
+        "/jobs/update/1", content=json.dumps(data), headers=registered_user_token_header
+    )
     response = client.get("/jobs/get/1")
     print(response.json())
     assert response.json()["title"] == "Sr. MLE"
     assert response.json()["location"] == "NY,BK"
 
 
-def test_delete_one_jobs(client):
+def test_delete_one_jobs(client, registered_user_token_header):
     data = {
         "title": "PSE",
         "company": "NoobHunter",
         "description": "call kids git gud on fortnite",
     }
-    _ = client.post("/jobs/create-job/", content=json.dumps(data))
-    _ = client.delete("/jobs/delete/1")
+    _ = client.post(
+        "/jobs/create-job/",
+        content=json.dumps(data),
+        headers=registered_user_token_header,
+    )
+    _ = client.delete("/jobs/delete/1", headers=registered_user_token_header)
     response = client.get("/jobs/get/1")
     assert response.status_code == status.HTTP_404_NOT_FOUND
