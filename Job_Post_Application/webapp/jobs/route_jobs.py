@@ -8,11 +8,12 @@ from sqlalchemy.orm import Session
 
 from db.session import get_db
 from db.model.users import User
-from schemas.jobs import JobCreate
-from webapps.jobs.forms import JobCreateForm
+from schema.jobs import JobCreate
+from webapp.jobs.forms import JobCreateForm
 from db.repository.jobs import create_new_job
 from db.repository.jobs import list_jobs, retrieve_job
-from apis.version1.route_login import get_current_user_from token
+from apis.version_1.route_login import get_current_user_from_token
+from fastapi.security.utils import get_authorization_scheme_param
 
 
 router = APIRouter(include_in_schema=False)
@@ -27,7 +28,7 @@ async def home(request: Request, db: Session = Depends(get_db), msg: str = None)
     )
 
 
-@router.get("/jobs/detail/{record_id}")
+@router.get("/detail/{record_id}")
 async def job_details(request: Request, record_id: int, db: Session = Depends(get_db)):
     job = retrieve_job(record_id, db)
     return templates.TemplateResponse(
@@ -38,14 +39,20 @@ async def job_details(request: Request, record_id: int, db: Session = Depends(ge
 def create_job(requests: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("jobs/create_job.html", {"request": requests})
 
+
 @router.post("/post-a-job/")
-def create_job(request: Request,
-               db: Session = Depends(get_db),
-               current_user: User = Depends):
+async def create_job(request: Request,
+               db: Session = Depends(get_db)):
     form = JobCreateForm(request)
     await form.load_data()
     if form.is_valid():
         try:
+            token = request.cookies.get("access_token")
+            scheme, param = get_authorization_scheme_param(
+                token
+            )  # scheme will hold "Bearer" and param will hold actual token value
+            current_user: User = get_current_user_from_token(token=param, db=db)
+
             job = JobCreate(**form.__dict__)
             job = create_new_job(job=job, db=db, owner_id=current_user.id)
             return responses.RedirectResponse(
@@ -56,6 +63,6 @@ def create_job(request: Request,
             form.__dict__.get("errors").append(
                 "You might not be logged in, In case problem persists please contact us"
             )
-
+            return templates.TemplateResponse("jobs/create_job.html", form.__dict__)
 
     return templates.TemplateResponse("jobs/create_job.html", form.__dict__)

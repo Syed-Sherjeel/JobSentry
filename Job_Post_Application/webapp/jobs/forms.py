@@ -26,9 +26,9 @@ class JobCreateForm:
             self.errors.append("Please enter valid job title")
         if not self.company_url or not self.company_url.__contains__("http"):
             self.errors.append("Valid Url is required i.e, http://abc.com ")
-        if not self.company or not len(self.company) <= 2:
+        if not self.company or not len(self.company) >= 2:
             self.errors.append("Valid Company name is required")
-        if not self.description or not len(self.description) <= 10:
+        if not self.description or not len(self.description) > 10:
             self.errors.append("Description too short")
         if not self.errors:
             return True
