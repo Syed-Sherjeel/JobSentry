@@ -56,7 +56,7 @@ async def create_job(request: Request,
             job = JobCreate(**form.__dict__)
             job = create_new_job(job=job, db=db, owner_id=current_user.id)
             return responses.RedirectResponse(
-                f"/details/{job.id}", status_code=status.HTTP_302_FOUND
+                f"/detail/{job.id}", status_code=status.HTTP_302_FOUND
             )
         except Exception as e:
             print(e)
@@ -66,3 +66,9 @@ async def create_job(request: Request,
             return templates.TemplateResponse("jobs/create_job.html", form.__dict__)
 
     return templates.TemplateResponse("jobs/create_job.html", form.__dict__)
+
+
+@router.get("/delete-a-job")
+async def delete_job(request: Request, db: Session = Depends(get_db)):
+    jobs = list_jobs(db=db)
+    return templates.TemplateResponse("jobs/delete_job.html", {"request": request, "jobs": jobs})
