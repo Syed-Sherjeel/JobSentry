@@ -29,7 +29,8 @@ async def login(request: Request, db: Session = Depends(get_db)):
             form.__dict__.update(msg="Login Successful :)")
             response = templates.TemplateResponse("auth/login.html", form.__dict__)
             login_for_access_token(response=response, form_data=form, db=db)
-            return response
+            redirection = templates.TemplateResponse("general_pages/homepage.html", form.__dict__)
+            return redirection
         except HTTPException:
             form.__dict__.update(msg="")
             form.__dict__.get("errors").append("Incorrect Email or Password")
