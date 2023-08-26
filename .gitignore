@@ -4,4 +4,4 @@ venv
 *.db
 .idea
 .pytest_cache
-.env
+Job_Post_Application/.env
