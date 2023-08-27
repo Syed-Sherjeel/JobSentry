@@ -80,11 +80,3 @@ async def search_job(request: Request, db: Session = Depends(get_db),  query: Op
     matched_jobs = query_jobs(query, db)
     return templates.TemplateResponse("general_pages/homepage.html", {"request": request, "jobs": matched_jobs})
 
-
-@router.get("/autocomplete")
-async def autocomplete(request: Request, db: Session = Depends(get_db), query: Optional[str]= None):
-    matched_jobs = query_jobs(query, db)
-    job_titles = []
-    for job in matched_jobs:
-        job_titles.append(job.title)
-    return job_titles

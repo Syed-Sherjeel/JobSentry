@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status, HTTPException
@@ -13,6 +13,7 @@ from db.repository.jobs import (
     list_jobs,
     update_job_by_id,
     delete_job_by_id,
+    query_jobs
 )
 
 router = APIRouter()
@@ -84,3 +85,12 @@ def delete_job(
     raise HTTPException(
         detail="You are not permitted!!!!", status_code=status.HTTP_401_UNAUTHORIZED
     )
+
+
+@router.get("/autocomplete")
+async def autocomplete(term: Optional[str] = None, db: Session = Depends(get_db)):
+    matched_jobs = query_jobs(term, db)
+    job_titles = []
+    for job in matched_jobs:
+        job_titles.append(job.title)
+    return job_titles
