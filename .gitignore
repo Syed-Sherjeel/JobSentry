@@ -3,5 +3,6 @@ __pycache__
 venv
 *.db
 .idea
+*.env
 .pytest_cache
 Job_Post_Application/.env
