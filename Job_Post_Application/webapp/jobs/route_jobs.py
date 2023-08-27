@@ -1,4 +1,5 @@
-from fastapi import APIRouter
+from typing import Optional
+
 from fastapi import APIRouter
 from fastapi import Request, Depends
 from fastapi import status, responses
@@ -11,7 +12,7 @@ from db.model.users import User
 from schema.jobs import JobCreate
 from webapp.jobs.forms import JobCreateForm
 from db.repository.jobs import create_new_job
-from db.repository.jobs import list_jobs, retrieve_job
+from db.repository.jobs import list_jobs, retrieve_job, query_jobs
 from apis.version_1.route_login import get_current_user_from_token
 from fastapi.security.utils import get_authorization_scheme_param
 
@@ -72,3 +73,18 @@ async def create_job(request: Request,
 async def delete_job(request: Request, db: Session = Depends(get_db)):
     jobs = list_jobs(db=db)
     return templates.TemplateResponse("jobs/delete_job.html", {"request": request, "jobs": jobs})
+
+
+@router.get("/search/")
+async def search_job(request: Request, db: Session = Depends(get_db),  query: Optional[str] = None):
+    matched_jobs = query_jobs(query, db)
+    return templates.TemplateResponse("general_pages/homepage.html", {"request": request, "jobs": matched_jobs})
+
+
+@router.get("/autocomplete")
+async def autocomplete(request: Request, db: Session = Depends(get_db), query: Optional[str]= None):
+    matched_jobs = query_jobs(query, db)
+    job_titles = []
+    for job in matched_jobs:
+        job_titles.append(job.title)
+    return job_titles
