@@ -6,6 +6,7 @@ from core import settings
 from apis import api_router
 from webapp import web_page_router
 from db.session import engine
+from db.utils import check_db_connected, check_db_disconnected
 
 
 def include_router(application: FastAPI):
@@ -30,3 +31,13 @@ def create_tables():
 
 
 app = start_application()
+
+
+@app.on_event("startup")
+async def app_startup():
+    await check_db_connected()
+
+
+@app.on_event("shutdown")
+async def app_shutdown():
+    await check_db_disconnected()
