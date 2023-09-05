@@ -1,0 +1,4 @@
+database:
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: 1234
+  SECRET_KEY: asflklknasf123
