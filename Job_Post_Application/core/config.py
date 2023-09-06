@@ -21,11 +21,9 @@ class Settings:
     PROJECT_VERSION: str = "1.0.0"
     POSTGRES_USER: str = config["database"]["POSTGRES_USER"]
     POSTGRES_PASSWORD = config["database"]["POSTGRES_PASSWORD"]
-    POSTGRES_SERVER: str = os.getenv("POSTGRES_SERVER", "localhost")
-    POSTGRES_PORT: str = os.getenv(
-        "POSTGRES_PORT", 5432
-    )  # default postgres port is 5432
-    POSTGRES_DB: str = os.getenv("POSTGRES_DB", "tdd")
+    POSTGRES_SERVER: str = config["database"]["POSTGRES_HOST"]
+    POSTGRES_PORT: str = config["database"]["POSTGRES_PORT"]
+    POSTGRES_DB: str = config["database"]["POSTGRES_DB"]
     DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}"
     SECRET_KEY: str = config["database"]["SECRET_KEY"]
     ALGORITHM = "HS256"
