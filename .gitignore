@@ -3,5 +3,7 @@ __pycache__
 venv
 *.db
 .idea
+*.env
 .pytest_cache
-.env
+Job_Post_Application/.env
+.DS_Store
