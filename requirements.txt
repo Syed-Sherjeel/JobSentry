@@ -56,3 +56,4 @@ typing_extensions==4.6.2
 urllib3==2.0.3
 uvicorn==0.22.0
 virtualenv==20.23.0
+locust==2.16.1
