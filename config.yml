@@ -1,7 +1,0 @@
-database:
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: 1234
-  SECRET_KEY: asflklknasf123
-  POSTGRES_PORT: 5432
-  POSTGRES_HOST: localhost
-  POSTGRES_DB: job_search
