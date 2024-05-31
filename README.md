@@ -36,13 +36,13 @@ JobSentry is a comprehensive job posting and management platform built using Fas
 ### Deployment:
 
 - Build Docker image: `docker build -t jobsentry .`
-- Run Docker container: `docker run -d -p 8000:8000 \
-                         -e POSTGRES_USER=postgres \
-                         -e POSTGRES_PASSWORD=1234 \
-                         -e POSTGRES_HOST=localhost \
-                         -e POSTGRES_PORT=5431 \
-                         -e POSTGRES_DB=jobapp \
-                         -e SECRET_KEY=asdfasf12 \
+- Run Docker container: `docker run -d -p 8000:8000 
+                         -e POSTGRES_USER=postgres 
+                         -e POSTGRES_PASSWORD=1234 
+                         -e POSTGRES_HOST=localhost 
+                         -e POSTGRES_PORT=5431 
+                         -e POSTGRES_DB=jobapp 
+                         -e SECRET_KEY=asdfasf12 
                          jobsentry
                           `
 
