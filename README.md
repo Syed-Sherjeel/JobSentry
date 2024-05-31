@@ -1,6 +1,7 @@
 # JobSentry
 
 JobSentry is a comprehensive job posting and management platform built using FastAPI for the backend API and Jinja templates for serving web pages. Leveraging the power of FastAPI, SQLAlchemy ORM, JWT authentication, and PostgreSQL database, this project provides a robust and scalable solution for job seekers and employers alike. With support for unit testing using Pytest, load testing with Locust, and seamless deployment using Docker, FastAPI-JobHub ensures reliability, security, and performance at every step.
+![techstack](https://github.com/Syed-Sherjeel/JobSentry/assets/56888046/4669e5a7-c01e-4ba4-b1f9-289fc396dec5)
 
 ## Features:
 
